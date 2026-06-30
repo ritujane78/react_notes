@@ -12,22 +12,33 @@ const AllNotes = () => {
   const [error, setError] = useState(false);
 
   const fetchNotes = async () => {
-    setLoading(true);
-    try {
-      const response = await api.get("/notes");
+  console.log("fetchNotes started");
+  setLoading(true);
 
-      const parsedNotes = response.data.map((note) => ({
-        ...note,
-        parsedContent: JSON.parse(note.content).content, // Assuming each note's content is JSON-formatted.
-      }));
-      setNotes(parsedNotes);
-    } catch (error) {
-      setError(error.response.data.message);
-      console.error("Error fetching notes", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    console.log("Before API call");
+
+    const response = await api.get("/notes");
+
+    console.log("After API call");
+    console.log(response);
+
+    const parsedNotes = response.data.map(note => ({
+      ...note,
+      parsedContent: JSON.parse(note.content).content,
+    }));
+
+    setNotes(parsedNotes);
+  } catch (err) {
+    console.log("Caught error:", err);
+    console.log("Error response:", err.response);
+
+    setError(err.response?.data?.message || err.message);
+  } finally {
+    console.log("Finally");
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     //calling the function here to fetch all notes
@@ -47,22 +58,6 @@ const AllNotes = () => {
             My Notes
           </h1>
         )}
-        {loading ? (
-          <div className="flex  flex-col justify-center items-center  h-72">
-            <span>
-              <Blocks
-                height="70"
-                width="70"
-                color="#4fa94d"
-                ariaLabel="blocks-loading"
-                wrapperStyle={{}}
-                wrapperClass="blocks-wrapper"
-                visible={true}
-              />
-            </span>
-            <span>Please wait...</span>
-          </div>
-        ) : (
           <>
             {notes && notes?.length === 0 ? (
               <div className="flex flex-col items-center justify-center min-h-96  p-4">
@@ -93,7 +88,6 @@ const AllNotes = () => {
               </>
             )}
           </>
-        )}
       </div>
     </div>
   );
