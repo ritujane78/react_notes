@@ -117,6 +117,7 @@ const UserList = () => {
     const fetchUsers = async () => {
       try {
         const response = await api.get("/admin/getusers");
+        console.log(response.data);
         const usersData = Array.isArray(response.data) ? response.data : [];
         setUsers(usersData);
       } catch (err) {
@@ -139,8 +140,8 @@ const UserList = () => {
     //set the data for each rows in the table according to the field name in columns
     //Example: username is the keyword in row it should matche with the field name in column so that the data will show on that column dynamically
     return {
-      id: item.userId,
-      username: item.userName,
+      id: item.id,
+      username: item.username,
       email: item.email,
       created: formattedDate,
       status: item.enabled ? "Active" : "Inactive",

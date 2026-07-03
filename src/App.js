@@ -1,4 +1,4 @@
-import React from "react";
+import {useState} from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Auth/Login";
 import Signup from "./components/Auth/Signup";
@@ -21,6 +21,7 @@ import ResetPassword from "./components/Auth/ResetPassword";
 import Footer from "./components/Footer/Footer";
 
 const App = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <Router>
       <Navbar />
@@ -78,7 +79,7 @@ const App = () => {
         />
         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
 
-        <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </Router>
